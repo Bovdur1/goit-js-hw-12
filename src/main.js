@@ -56,8 +56,7 @@ async function createRequest(query, page) {
 }
 
 let fetchImages = null;
-    let page = 1;
-
+let page = 1;
 
 function submitFunction(event) {
     event.preventDefault();
@@ -105,9 +104,8 @@ function submitFunction(event) {
 }
 
 async function fetchMoreImages() {
+    loadMoreBtn.classList.add("is-hidden");
     const response = await fetchImages();
-    console.log(page);
-    console.log(Math.ceil(response.totalHits / 40));
 
     const galleryItemRect = document.querySelector(".gallery-item").getBoundingClientRect();
         window.scrollBy({
@@ -115,23 +113,16 @@ async function fetchMoreImages() {
             left: 0,
             behavior: 'smooth',
         });
-
-
-        if (page > (Math.ceil(response.totalHits / 40))) {
+    
+    if (page > (Math.ceil(response.totalHits / 40))) {
+        iziToast.info({
+            message: "We're sorry, but you've reached the end of search results.",
+            position: "topRight"
+        })
             
-            iziToast.info({
-                message: "We're sorry, but you've reached the end of search results.",
-                position: "topRight"
-            })
-            
-            loadMoreBtn.classList.add("is-hidden");
-        }  
-
+        loadMoreBtn.classList.add("is-hidden");
+    }  
 }
-
-
-
-
 
 //Create gallery markup
 function galleryMarkup(images) {
