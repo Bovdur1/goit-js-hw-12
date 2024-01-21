@@ -13,7 +13,8 @@ const loadMoreBtn = document.querySelector(".load-more-btn")
 
 const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 });
 
-form.addEventListener("submit", submitFunction)
+form.addEventListener("submit", submitFunction);
+loadMoreBtn.addEventListener('click', fetchMoreImages)
     
 function searchParams(q, page) {
     const api = axios.create({
@@ -37,12 +38,13 @@ async function createRequest(query, page) {
         const response = await searchParams(query, page);
 
         if (response.data.totalHits === 0) {
-            iziToast.error({
+            loadMoreBtn.classList.add("is-hidden");
+
+            return  iziToast.error({
                 message: "Sorry, there are no images matching your search query. Please try again!",
                 position: "topRight"
             })
 
-            loadMoreBtn.classList.add("is-hidden");
         }
 
         return response.data;
@@ -53,20 +55,16 @@ async function createRequest(query, page) {
 
 }
 
-// Function for search form listener
-let fetchImages = false;
+let fetchImages = null;
+    let page = 1;
+
 
 function submitFunction(event) {
     event.preventDefault();
     gallery.innerHTML = '';
     const query = event.currentTarget.elements.search.value;
     loadMoreBtn.classList.add("is-hidden")
-    let page = 1;
-    
-    if (fetchImages) {
-        loadMoreBtn.removeEventListener("click", fetchImages);
-        fetchImages = false;
-    }
+    page = 1
     
     if (query === "" || query === undefined) {
         iziToast.error({
@@ -76,17 +74,16 @@ function submitFunction(event) {
         return
     }
 
-    fetchImages = async() => {
+    fetchImages = async () => {
         try {
             loader.classList.remove("is-hidden");
             const response = await createRequest(query, page);
             page += 1;
             loader.classList.add("is-hidden");
 
-            if (response.totalHits > 0) {
-                galleryMarkup(response.hits);
-                lightbox.refresh();
-            }
+            galleryMarkup(response.hits);
+            lightbox.refresh();
+
 
             if (page > 1 && response.totalHits > 40) {
                 loadMoreBtn.classList.remove("is-hidden");
@@ -104,30 +101,37 @@ function submitFunction(event) {
 
     form.reset()
 
-    loadMoreBtn.addEventListener("click", async () => { 
-        loadMoreBtn.classList.add("is-hidden");
+    return page
+}
 
-        const response = await fetchImages();
+async function fetchMoreImages() {
+    const response = await fetchImages();
+    console.log(page);
+    console.log(Math.ceil(response.totalHits / 40));
 
-        const galleryItemRect = document.querySelector(".gallery-item").getBoundingClientRect();
+    const galleryItemRect = document.querySelector(".gallery-item").getBoundingClientRect();
         window.scrollBy({
             top: galleryItemRect.height * 2.0,
             left: 0,
             behavior: 'smooth',
         });
 
+
         if (page > (Math.ceil(response.totalHits / 40))) {
-            setTimeout(() => {
-                iziToast.info({
-                    message: "We're sorry, but you've reached the end of search results.",
-                    position: "topRight"
-                })
-            }, 1000);
+            
+            iziToast.info({
+                message: "We're sorry, but you've reached the end of search results.",
+                position: "topRight"
+            })
+            
             loadMoreBtn.classList.add("is-hidden");
-        }
-       
-    })
+        }  
+
 }
+
+
+
+
 
 //Create gallery markup
 function galleryMarkup(images) {
@@ -147,4 +151,3 @@ function galleryMarkup(images) {
 
     gallery.insertAdjacentHTML("beforeend", markup)
 }; 
-
