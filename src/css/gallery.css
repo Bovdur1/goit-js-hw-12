@@ -1,0 +1,112 @@
+.search-img-form {
+    max-width: 380px;
+    display: block;
+    margin: 20px auto 0 auto;
+}
+
+.search-input {
+    display: inline-block;
+    width: 280px;
+    padding: 8px;
+    height: 40px;
+    background-color: #f5ecf5;
+    border: 1px solid #cdc7cc;
+    border-radius: 8px;
+    margin-right: 8px;
+}
+
+.search-btn,
+.load-more-btn {
+    height: 40px;
+    border: none;
+    background-color: rgb(102, 84, 121);
+    border-radius: 8px;
+    min-width: 80px;
+    color: #f5ecf5;
+}
+
+.load-more-btn {
+    display: block;
+    width: 160px;
+    margin: 0 auto 20px auto;
+}
+
+.search-btn:hover {
+    background-color: rgb(110, 79, 143);
+}
+
+.gallery-wrapper {
+    max-width: 1128px;
+    margin: 0 auto;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 16px;
+    row-gap: 16px;
+    margin: 20px auto;
+    list-style: none;
+    padding-left: 0;
+}
+
+.gallery-item {
+    width: calc((100% - 48px) / 4);
+    height: 206px;
+    transition: transform 0.25s;
+    border-radius: 8px;
+}
+
+.gallery-image {
+    display: block;
+    object-fit: cover;
+    width: 270px;
+    height: 150px;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.image-info {
+    font-size: 14px;
+    display: flex;
+    text-align: center;
+    color: #f5ecf5;
+    background-color: rgb(88, 76, 85);
+    padding: 4px;
+}
+
+/* ======== Loarder style ============= */
+.loader-wrapper {
+    width: 48px;
+    margin: 20px auto;
+}
+
+.loader {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+.is-hidden {
+    display: none;
+}
