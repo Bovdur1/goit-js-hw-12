@@ -88,7 +88,7 @@ function submitFunction(event) {
                 lightbox.refresh();
             }
 
-            if (page > 1 && response.totalHits > 0) {
+            if (page > 1 && response.totalHits > 40) {
                 loadMoreBtn.classList.remove("is-hidden");
             }
 
