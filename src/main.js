@@ -79,7 +79,8 @@ function submitFunction(event) {
     fetchImages = async() => {
         try {
             loader.classList.remove("is-hidden");
-            const response = await createRequest(query, page++);
+            const response = await createRequest(query, page);
+            page += 1;
             loader.classList.add("is-hidden");
 
             if (response.totalHits > 0) {
